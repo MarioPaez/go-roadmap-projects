@@ -1,0 +1,23 @@
+[
+ {
+  "id": 0,
+  "description": "Ir a la biblioteca Feltrinelli",
+  "status": "TO DO",
+  "createdAt": "25-07-2025 16:00:40",
+  "updatedAt": "25-07-2025 16:00:40"
+ },
+ {
+  "id": 1,
+  "description": "Ir al gym a las 17h a calistenia",
+  "status": "TO DO",
+  "createdAt": "25-07-2025 16:08:08",
+  "updatedAt": "25-07-2025 16:08:08"
+ },
+ {
+  "id": 2,
+  "description": "Elegir la película para ver con Carmen",
+  "status": "TO DO",
+  "createdAt": "25-07-2025 16:08:40",
+  "updatedAt": "25-07-2025 16:08:40"
+ }
+]

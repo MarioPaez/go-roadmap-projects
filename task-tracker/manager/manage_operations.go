@@ -1,11 +1,11 @@
 package manager
 
-import "fmt"
-
-//Args[1] -> add, update, delete, mark-in-progress, mark-done, list
-//Args[2] -> {id}, description, done, todo, in-progress
-
-//Case Add: args[1]==add y args[2]== description entre dobles comillas
+import (
+	"errors"
+	"fmt"
+	"task-tracker/service"
+	"task-tracker/util"
+)
 
 var ADD = "add"
 var UPDATE = "update"
@@ -15,11 +15,11 @@ var MARK_DONE = "mark-done"
 var LIST = "list"
 
 func ManageOperations(args []string) {
-	fmt.Println("Las operaciones que hemos recibido son: ", args)
-	if len(args) > 1 {
-		switch args[1] {
+	taskService := service.NewTaskService()
+	if len(args) == 2 {
+		switch args[0] {
 		case ADD:
-			println("has puesto add")
+			manageAdd(args, taskService)
 		case UPDATE:
 			println("has puesto update")
 		case DELETE:
@@ -29,9 +29,18 @@ func ManageOperations(args []string) {
 		case MARK_DONE:
 			println("has puesto MARK_DONE")
 		case LIST:
-			println("has puesto LIST")
+			println("has puesto LIST. Me falta solo enviar list")
 		default:
 			fmt.Println("Don't support the operation ", args[1], ". Only support add, update, delete, mark-in-progress, mark-done and list")
 		}
 	}
+}
+
+func manageAdd(args []string, taskService service.TaskService) int {
+	if len(args) == 1 {
+		util.LogError(errors.New("description not provided"))
+	}
+	id := taskService.Add(args[1])
+	fmt.Printf("the task with description %s has been successfully saved. The id is :%d\n", args[1], id)
+	return id
 }

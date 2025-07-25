@@ -10,5 +10,5 @@ import (
 func main() {
 	fmt.Println("Welcome to your Task Tracker")
 	f.CheckFile()
-	m.ManageOperations(os.Args)
+	m.ManageOperations(os.Args[1:])
 }
