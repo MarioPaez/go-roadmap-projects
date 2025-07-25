@@ -19,5 +19,12 @@
   "status": "TO DO",
   "createdAt": "25-07-2025 16:08:40",
   "updatedAt": "25-07-2025 16:08:40"
+ },
+ {
+  "id": 3,
+  "description": "Nueva tarea",
+  "status": "TO DO",
+  "createdAt": "25-07-2025 16:22:04",
+  "updatedAt": "25-07-2025 16:22:04"
  }
 ]
