@@ -1,30 +1,16 @@
 [
  {
-  "id": 0,
-  "description": "Ir a la biblioteca Feltrinelli",
-  "status": "TO DO",
-  "createdAt": "25-07-2025 16:00:40",
-  "updatedAt": "25-07-2025 16:00:40"
- },
- {
   "id": 1,
-  "description": "Ir al gym a las 17h a calistenia",
-  "status": "TO DO",
-  "createdAt": "25-07-2025 16:08:08",
-  "updatedAt": "25-07-2025 16:08:08"
+  "description": "Hacer café",
+  "status": "in-progress",
+  "createdAt": "26-07-2025 12:25:58",
+  "updatedAt": "26-07-2025 12:25:58"
  },
  {
   "id": 2,
-  "description": "Elegir la película para ver con Carmen",
-  "status": "TO DO",
-  "createdAt": "25-07-2025 16:08:40",
-  "updatedAt": "25-07-2025 16:08:40"
- },
- {
-  "id": 3,
-  "description": "Nueva tarea",
-  "status": "TO DO",
-  "createdAt": "25-07-2025 16:22:04",
-  "updatedAt": "25-07-2025 16:22:04"
+  "description": "Ir a correr mañana",
+  "status": "done",
+  "createdAt": "26-07-2025 12:26:05",
+  "updatedAt": "26-07-2025 12:26:05"
  }
 ]

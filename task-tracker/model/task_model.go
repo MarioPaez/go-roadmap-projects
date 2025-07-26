@@ -3,9 +3,9 @@ package model
 type TaskStatus string
 
 var (
-	TASK_STATUS_TODO        TaskStatus = "TO DO"
-	TASK_STATUS_IN_PROGRESS TaskStatus = "IN PROGRESS"
-	TASK_STATUS_DONE        TaskStatus = "DONE"
+	TASK_STATUS_TODO        TaskStatus = "todo"
+	TASK_STATUS_IN_PROGRESS TaskStatus = "in-progress"
+	TASK_STATUS_DONE        TaskStatus = "done"
 )
 
 type Task struct {
