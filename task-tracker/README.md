@@ -1,72 +1,128 @@
-## Requirements
-The application should run from the command line, accept user actions and inputs as arguments, and store the tasks in a JSON file. The user should be able to:
+# Task Tracker CLI
 
-Add, Update, and Delete tasks
-Mark a task as in progress or done
-List all tasks
-List all tasks that are done
-List all tasks that are not done
-List all tasks that are in progress
-Here are some constraints to guide the implementation:
+A simple command-line application to manage your daily tasks, written in Go. It allows you to add, update, delete, list, and change the status of tasks, storing everything in a local JSON file.
 
-You can use any programming language to build this project.
-Use positional arguments in command line to accept user inputs.
-Use a JSON file to store the tasks in the current directory.
-The JSON file should be created if it does not exist.
-Use the native file system module of your programming language to interact with the JSON file.
-Do not use any external libraries or frameworks to build this project.
-Ensure to handle errors and edge cases gracefully.
-Example
-The list of commands and their usage is given below:
+---
 
-# Adding a new task
-task-cli add "Buy groceries"
-# Output: Task added successfully (ID: 1)
+## Installation
 
-# Updating and deleting tasks
-task-cli update 1 "Buy groceries and cook dinner"
-task-cli delete 1
+1. **Clone the repository:**
+   ```sh
+   git clone https://github.com/youruser/task-tracker.git
+   cd task-tracker
+   ```
 
-# Marking a task as in progress or done
-task-cli mark-in-progress 1
-task-cli mark-done 1
+2. **Build the executable:**
+   ```sh
+   go build -o tt
+   ```
 
-# Listing all tasks
-task-cli list
+---
 
-# Listing tasks by status
-task-cli list done
-task-cli list todo
-task-cli list in-progress
-Task Properties
-Each task should have the following properties:
+## Usage
 
-id: A unique identifier for the task
-description: A short description of the task
-status: The status of the task (todo, in-progress, done)
-createdAt: The date and time when the task was created
-updatedAt: The date and time when the task was last updated
-Make sure to add these properties to the JSON file when adding a new task and update them when updating a task.
+The main executable is `tt`. You can run any of the following commands from your terminal:
 
-Getting Started
-Here are a few steps to help you get started with the Task Tracker CLI project:
+### 1. **Add a task**
+```sh
+./tt add "Go shopping"
+```
+**Output:**  
+`the task with description Go shopping has been successfully saved. The id is :0`
 
-Set Up Your Development Environment
-Choose a programming language you are comfortable with (e.g., Python, JavaScript, etc.).
-Ensure you have a code editor or IDE installed (e.g., VSCode, PyCharm).
-Project Initialization
-Create a new project directory for your Task Tracker CLI.
-Initialize a version control system (e.g., Git) to manage your project.
-Implementing Features
-Start by creating a basic CLI structure to handle user inputs.
-Implement each feature one by one, ensuring to test thoroughly before moving to the next e.g. implement adding task functionality first, listing next, then updating, marking as in progress, etc.
-Testing and Debugging
-Test each feature individually to ensure they work as expected. Look at the JSON file to verify that the tasks are being stored correctly.
-Debug any issues that arise during development.
-Finalizing the Project
-Ensure all features are implemented and tested.
-Clean up your code and add comments where necessary.
-Write a good readme file on how to use your Task Tracker CLI.
-By the end of this project, you will have developed a practical tool that can help you or others manage tasks efficiently. This project lays a solid foundation for more advanced programming projects and real-world applications.
+---
 
-Happy coding!
+### 2. **Update a task**
+```sh
+./tt update 0 "Go shopping and cook"
+```
+**Output:**  
+`the task with ID 0 has been updated. The new description is Go shopping and cook.`
+
+---
+
+### 3. **Delete a task**
+```sh
+./tt delete 0
+```
+**Output:**  
+`the task with ID 0 has been deleted.`
+
+---
+
+### 4. **Mark a task as "in progress"**
+```sh
+./tt mark-in-progress 1
+```
+**Output:**  
+`the task with ID 1 has been updated to state in-progress.`
+
+---
+
+### 5. **Mark a task as "done"**
+```sh
+./tt mark-done 1
+```
+**Output:**  
+`the task with ID 1 has been updated to state done.`
+
+---
+
+### 6. **List all tasks**
+```sh
+./tt list
+```
+**Sample output:**
+```
+ID   | Description                              | Status       | Created At           | Updated At
+-----+------------------------------------------+--------------+----------------------+----------------------
+0    | Go shopping and cook                     | done         | 26-07-2025 12:00:00  | 26-07-2025 12:10:00
+1    | Call Carmen                              | in-progress  | 26-07-2025 12:05:00  | 26-07-2025 12:15:00
+```
+
+---
+
+### 7. **List tasks by status**
+```sh
+./tt list done
+./tt list todo
+./tt list in-progress
+```
+**Output:**  
+Only shows tasks with the specified status.
+
+---
+
+## Task properties
+
+- **id**: Unique identifier for the task
+- **description**: Short description of the task
+- **status**: Task status (`todo`, `in-progress`, `done`)
+- **createdAt**: Creation date and time
+- **updatedAt**: Last update date and time
+
+---
+
+## Notes
+
+- The `tasks.json` file is automatically created in the current directory if it does not exist.
+- All commands display clear success or error messages.
+- If you enter an incorrect command or argument, the program will show help or an error message.
+
+---
+
+## Example full workflow
+
+```sh
+./tt add "Read a book"
+./tt list
+./tt mark-in-progress 0
+./tt update 0 "Read a Go book"
+./tt mark-done 0
+./tt list done
+./tt delete 0
+```
+
+---
+
+Happy task

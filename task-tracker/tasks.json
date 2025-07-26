@@ -12,5 +12,12 @@
   "status": "done",
   "createdAt": "26-07-2025 12:26:05",
   "updatedAt": "26-07-2025 12:26:05"
+ },
+ {
+  "id": 2,
+  "description": "nueva tarea",
+  "status": "todo",
+  "createdAt": "26-07-2025 16:34:35",
+  "updatedAt": "26-07-2025 16:34:35"
  }
 ]
