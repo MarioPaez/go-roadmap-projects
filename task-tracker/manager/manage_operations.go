@@ -9,15 +9,21 @@ import (
 	"task-tracker/util"
 )
 
-const ADD = "add"
-const UPDATE = "update"
-const DELETE = "delete"
-const MARK_IN_PROGRESS = "mark-in-progress"
-const MARK_DONE = "mark-done"
-const LIST = "list"
+const (
+	ADD              = "add"
+	UPDATE           = "update"
+	DELETE           = "delete"
+	MARK_IN_PROGRESS = "mark-in-progress"
+	MARK_DONE        = "mark-done"
+	LIST             = "list"
+)
 
 func ManageOperations(args []string) error {
 	taskService := service.NewTaskService()
+	if len(args) == 0 {
+		fmt.Println("Usage: tt [add|update|delete|mark-in-progress|mark-done|list] [args]")
+		return nil
+	}
 	if len(args) > 0 {
 		switch args[0] {
 		case ADD:

@@ -14,29 +14,35 @@ var FILE_NAME = "tasks.json"
 
 func CheckFile() {
 	if _, err := os.Stat(FILE_NAME); os.IsNotExist(err) {
-		createFile()
+		if err := createFile(); err != nil {
+			util.LogError(fmt.Errorf("couldn't create file: %w", err))
+		}
 	}
 }
 
-func createFile() {
+func createFile() error {
 	file, err := os.Create(FILE_NAME)
 	if err != nil {
-		panic(fmt.Errorf("couldn't create file with name %s: %w", FILE_NAME, err))
+		return err
 	}
 	defer file.Close()
+	return nil
 }
 
-func openFile() *os.File {
+func openFile() (*os.File, error) {
 	file, err := os.OpenFile(FILE_NAME, os.O_RDWR, 0666)
 	if err != nil {
-		util.LogError(errors.New("impossible to open the file to read the last ID"))
+		return nil, err
 	}
-	return file
+	return file, nil
 }
 
 func GetTasks() []model.Task {
-	var tasks []model.Task
-	file := openFile()
+	file, err := openFile()
+	if err != nil {
+		util.LogError(fmt.Errorf("impossible to open the file: %w", err))
+		return nil
+	}
 	defer file.Close()
 
 	data, err := io.ReadAll(file)
@@ -44,10 +50,11 @@ func GetTasks() []model.Task {
 		return nil
 	}
 
+	var tasks []model.Task
 	if err := json.Unmarshal(data, &tasks); err != nil {
-		util.LogError(errors.New("failed to unmarshal json file into tasks"))
+		util.LogError(fmt.Errorf("failed to unmarshal json file into tasks: %w", err))
+		return nil
 	}
-
 	return tasks
 }
 
@@ -62,24 +69,27 @@ func GetTasksFiltered(filter string) []model.Task {
 	return filtered
 }
 
-func AddTasks(tasks []model.Task) {
-	file := openFile()
+func AddTasks(tasks []model.Task) error {
+	file, err := openFile()
+	if err != nil {
+		return err
+	}
 	defer file.Close()
 
 	if err := file.Truncate(0); err != nil {
-		util.LogError(errors.New("error truncating the file"))
+		return err
 	}
 	if _, err := file.Seek(0, 0); err != nil {
-		util.LogError(errors.New("error seeking the file"))
+		return err
 	}
 	tasksMarshaled, err := json.MarshalIndent(tasks, "", " ")
 	if err != nil {
-		util.LogError(errors.New("couldn't marshal the tasks"))
+		return err
 	}
-
 	if _, err := file.Write(tasksMarshaled); err != nil {
-		util.LogError(errors.New("error while trying write in the file")) //TODO: tener los errores desde otro lado
+		return err
 	}
+	return nil
 }
 
 func UpdateTask(newDescription string, id int) error {
@@ -93,13 +103,10 @@ func UpdateTask(newDescription string, id int) error {
 			break
 		}
 	}
-
 	if !updated {
 		return errors.New("id not found")
 	}
-
-	AddTasks(tasks)
-	return nil
+	return AddTasks(tasks)
 }
 
 func DeleteTask(id int) error {
@@ -116,8 +123,7 @@ func DeleteTask(id int) error {
 	if !found {
 		return errors.New("id not found")
 	}
-	AddTasks(updated)
-	return nil
+	return AddTasks(updated)
 }
 
 func ChangeStatus(status model.TaskStatus, id int) error {
@@ -131,11 +137,8 @@ func ChangeStatus(status model.TaskStatus, id int) error {
 			break
 		}
 	}
-
 	if !updated {
 		return errors.New("id not found")
 	}
-
-	AddTasks(tasks)
-	return nil
+	return AddTasks(tasks)
 }
