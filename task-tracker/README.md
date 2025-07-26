@@ -124,5 +124,3 @@ Only shows tasks with the specified status.
 ```
 
 ---
-
-Happy task
