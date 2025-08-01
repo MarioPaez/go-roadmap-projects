@@ -11,7 +11,7 @@ const (
 	HELP            = "help"
 )
 
-func ManageCommands(args []string) error {
+func ManageCommands(args []string, githubService service.GithubService) error {
 
 	if len(args) != 3 {
 		return utils.CommandUnknown(GITHUB_ACTIVITY, HELP)
@@ -19,10 +19,9 @@ func ManageCommands(args []string) error {
 
 	cmd := args[1]
 	username := args[2]
-
 	switch cmd {
 	case GITHUB_ACTIVITY:
-		return service.GetGithubActivity(username)
+		return githubService.GetGithubActivity(username)
 	case HELP:
 		fmt.Println("Use 'github-activity <username>'")
 	default:

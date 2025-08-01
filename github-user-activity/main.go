@@ -2,13 +2,15 @@ package main
 
 import (
 	"github-activity/commands"
+	"github-activity/service"
 	"log"
 	"os"
 )
 
 func main() {
 	args := os.Args
-	if err := commands.ManageCommands(args); err != nil {
+	githubService := service.NewGithubService()
+	if err := commands.ManageCommands(args, githubService); err != nil {
 		log.Fatal(err.Error())
 	}
 }

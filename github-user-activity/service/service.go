@@ -2,11 +2,11 @@ package service
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"github-activity/model"
 	"github-activity/utils"
 	"io"
+	"log"
 	"net/http"
 	"strings"
 )
@@ -16,30 +16,58 @@ const (
 	REPLACE     = "<username>"
 )
 
-func GetGithubActivity(username string) error {
-	url := strings.Replace(URL_PATTERN, REPLACE, username, 1) //Interesante entender como lo hace por detrás
+type GithubService interface {
+	GetGithubActivity(username string) error
+}
+
+type githubService struct {
+}
+
+func NewGithubService() GithubService {
+	return &githubService{}
+}
+
+func (s *githubService) GetGithubActivity(username string) error {
+	url := strings.Replace(URL_PATTERN, REPLACE, username, 1)
 
 	resp, err := http.Get(url)
 	if err != nil {
-		return errors.New(err.Error()) //TODO: Handle errors by us
+		return err
 	}
-	if resp.StatusCode == http.StatusOK {
-		defer resp.Body.Close()
-		info, err := io.ReadAll(resp.Body)
-		if err != nil {
-			return err //Cual es la diferencia con  errors.New(err.Error())?
-		}
-		var events []model.Event
-		fmt.Println("Se ha realizado correctamente la petición!")
-		if err := json.Unmarshal(info, &events); err != nil {
-			return err
-		}
-		utils.PrettyPrint(events)
+	manageResponse(resp, username)
+	return nil
+}
+
+func manageResponse(resp *http.Response, username string) error {
+
+	code := resp.StatusCode
+	switch code {
+	case http.StatusOK:
+		return readResponse(resp)
+	case http.StatusNotFound:
+		log.Printf("the username provided %q does not exist.", username)
+	default:
+		fmt.Printf("Status code: %d", code)
 	}
 	return nil
 }
 
-// Output:
-// - Pushed 3 commits to kamranahmedse/developer-roadmap
-// - Opened a new issue in kamranahmedse/developer-roadmap
-// - Starred kamranahmedse/developer-roadmap
+func readResponse(resp *http.Response) error {
+	defer resp.Body.Close()
+	info, err := io.ReadAll(resp.Body)
+	if err != nil {
+		log.Println("an error occur trying to read the response.")
+		return err
+	}
+	return getEvents(info)
+}
+
+func getEvents(info []byte) error {
+	var events []model.Event
+	if err := json.Unmarshal(info, &events); err != nil {
+		log.Println("an error occur trying to unmarshal the content of the response.")
+		return err
+	}
+	utils.PrettyPrint(events)
+	return nil
+}
