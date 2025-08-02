@@ -45,11 +45,10 @@ func manageResponse(resp *http.Response, username string) error {
 	case http.StatusOK:
 		return readResponse(resp)
 	case http.StatusNotFound:
-		log.Printf("the username provided %q does not exist.", username)
+		return fmt.Errorf("the username provided %q does not exist", username)
 	default:
-		fmt.Printf("Status code: %d", code)
+		return fmt.Errorf("status code: %d not supported", code)
 	}
-	return nil
 }
 
 func readResponse(resp *http.Response) error {
