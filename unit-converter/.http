@@ -1,8 +1,0 @@
-POST http://localhost:8080/length HTTP/1.1
-content-type: application/json
-
-{
-    "To": "centimeter",
-    "Value": 115.2,
-    "From": "meter"
-}
