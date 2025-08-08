@@ -3,7 +3,8 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"unit-tracker-gin/length"
+	"unit-tracker-gin/model"
+	"unit-tracker-gin/service"
 
 	"github.com/gin-gonic/gin"
 )
@@ -16,21 +17,14 @@ type Response struct {
 	Code    int         `json:"code,omitempty"`
 }
 
-type Conversion struct {
-	To    string
-	Value float64
-	From  string
-}
-
 func main() {
 	router := gin.Default()
-	router.POST("/length", lengthConversionHandler)
+	router.POST("", conversionHandler)
 	router.Run()
-
 }
 
-func lengthConversionHandler(g *gin.Context) {
-	conversion := Conversion{}
+func conversionHandler(g *gin.Context) {
+	conversion := model.Conversion{}
 	if err := g.ShouldBindBodyWithJSON(&conversion); err != nil {
 		g.JSON(http.StatusBadRequest, Response{
 			Success: false,
@@ -39,7 +33,10 @@ func lengthConversionHandler(g *gin.Context) {
 		})
 		return
 	}
-	if err := length.ValidateUnits(conversion.To, conversion.From); err != nil {
+
+	result, err := service.DoConversion(&conversion)
+
+	if err != nil {
 		g.JSON(http.StatusBadRequest, Response{
 			Success: false,
 			Code:    http.StatusBadRequest,
@@ -47,9 +44,11 @@ func lengthConversionHandler(g *gin.Context) {
 		})
 		return
 	}
-	msg := fmt.Sprintf("To %s from: %s y el valor es: %f", conversion.To, conversion.From, conversion.Value)
+
+	msg := fmt.Sprintf("Result of your calculation: %.3f %s = %.3f %s", conversion.Value, conversion.From, result, conversion.To)
 	g.JSON(200, Response{
 		Success: true,
 		Message: msg,
 	})
+
 }
