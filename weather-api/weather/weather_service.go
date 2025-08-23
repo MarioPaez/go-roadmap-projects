@@ -1,19 +1,22 @@
 package weather
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
 	"os"
 	"strings"
+
+	"github.com/redis/go-redis/v9"
 )
 
-func WeatherService() error {
+func WeatherService(redisClient *redis.Client, ctx context.Context) error {
 	url := buildUrl()
 
 	resp, err := http.Get(url)
 	if err != nil {
-		panic(err)
+		return err
 	}
 	defer resp.Body.Close()
 
