@@ -1,13 +1,11 @@
 package main
 
 import (
-	"fmt"
-	"os"
+	"api-weather/weather"
 )
 
-const KEY = "API_WEATHER_KEY"
-
 func main() {
-	apiKey := os.Getenv(KEY)
-	fmt.Println(apiKey)
+	if err := weather.WeatherService(); err != nil {
+		panic(err)
+	}
 }
