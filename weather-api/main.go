@@ -1,19 +1,14 @@
 package main
 
 import (
-	"api-weather/redis"
-	"api-weather/weather"
+	"api-weather/cache"
+	"api-weather/server"
 	"context"
-	"log"
 )
 
 func main() {
 
-	redisClient := redis.Setup()
+	redisClient := cache.Setup()
 	ctx := context.Background()
-
-	if err := weather.WeatherService(redisClient, ctx); err != nil {
-		log.Fatal(err)
-	}
-
+	server.InitServer(redisClient, ctx)
 }

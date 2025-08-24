@@ -1,4 +1,4 @@
-package weather
+package model
 
 const (
 	KEY                  = "API_WEATHER_KEY"
